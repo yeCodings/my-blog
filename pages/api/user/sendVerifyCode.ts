@@ -1,10 +1,10 @@
-import { NextApiRequest,NextApiResponse} from 'next'
+import { NextApiRequest,NextApiResponse} from 'next';
 import { format } from "date-fns";
 import md5 from 'md5';
 import { encode } from "js-base64";
 import {withIronSessionApiRoute} from 'iron-session/next';
 import request from 'service/fetch';
-import {ironOptions} from 'config/index'
+import {ironOptions} from 'config/index';
 import { ISession } from '..';
 
 

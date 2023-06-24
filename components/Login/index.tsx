@@ -40,7 +40,23 @@ const Login = (props: LoginProps) => {
 		})
 	};
 
-	const handleLogin = () => { };
+	// 点击登录发起请求
+	const handleLogin = () => {
+		request.post('/api/user/login',{
+			...form,
+			identity_type: 'phone',
+		}).then((res:any)=> {	
+			if(res?.code === 0){
+				// 登录成功
+
+				// 关闭弹窗
+				onClose && onClose();
+			}else{
+				message.error(res?.msg || '未知错误');
+			}
+		});
+	};
+
 	const handleOAuthLogin = () => { };
 	const handleFormChange = (e:ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
