@@ -3,6 +3,7 @@ import styles from './index.module.scss';
 import CountDown from 'components/CountDown';
 import request from 'service/fetch';
 import { message } from 'antd';
+import { useStore } from 'store';
 
 interface LoginProps {
 	isShow: boolean;
@@ -10,6 +11,7 @@ interface LoginProps {
 }
 
 const Login = (props: LoginProps) => {
+	const store = useStore();
 	const { isShow = false, onClose } = props;
 	const [isShowVerifyCode,setIsShowVerifyCode] = useState(false);
 
@@ -48,7 +50,8 @@ const Login = (props: LoginProps) => {
 		}).then((res:any)=> {	
 			if(res?.code === 0){
 				// 登录成功
-
+				store.user.setUserInfo(res.data);
+				
 				// 关闭弹窗
 				onClose && onClose();
 			}else{
