@@ -4,17 +4,17 @@ import { User, UserAuth } from 'db/entity';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ISession } from '../index';
+import { Cookie } from 'next-cookie';
+import { setCookie } from 'utils';
 
 export default withIronSessionApiRoute(login, ironOptions);
 
 async function login(req: NextApiRequest, res: NextApiResponse) {
   const { phone = '', verify = '', identity_type = 'phone' } = req.body;
   const session: ISession = req.session;
-
+  const cookies = Cookie.fromApiRoute(req,res);
   const db = await prepareConnection();
-  const userRepo = db.getRepository(User);
   const userAuthRepo = db.getRepository(UserAuth);
-  const users = await userRepo.find();
 
   if (String(session.verifyCode) === String(verify)) {
     // 验证码是正确的,在user_auths 表里面查找 identity_type 是否有记录
@@ -33,11 +33,13 @@ async function login(req: NextApiRequest, res: NextApiResponse) {
       const user = userAuth.user;
       const {id,nickname,avatar} = user;
 
-      session.id = id;
+      session.userId = id;
       session.nickname = nickname;
       session.avatar = avatar;
 
       await session.save();
+      
+      setCookie(cookies, {id,avatar,nickname});
       
       // 登录成功,返回data数据
       res?.status(200).send({ code: 0,msg: '登录成功', data: {
@@ -70,6 +72,8 @@ async function login(req: NextApiRequest, res: NextApiResponse) {
       session.avatar = avatar;
       // 保存相关信息到 session
       await session.save();
+
+      setCookie(cookies, {id,avatar,nickname});
 
       res?.status(200).send({ code: 0,msg: '登录成功', data: {
         userId: id,
