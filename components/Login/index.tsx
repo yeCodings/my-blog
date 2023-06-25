@@ -61,7 +61,16 @@ const Login = (props: LoginProps) => {
 		});
 	};
 
-	const handleOAuthLogin = () => { };
+		// clientID 145758f3c3704f70bbe7
+		// Client secrets  3bd6b2b53aee6eb175686673cdd9a10e83f66ee7
+
+	const handleOAuthGithub = () => { 
+		const githubClientid = '145758f3c3704f70bbe7';
+		const redirectUrl = 'http://localhost:3000/api/oauth/redirect';
+		
+		window.open(`https://github.com/login/oauth/authorize?client_id=${githubClientid}&redirect_url=${redirectUrl}`);
+	};
+
 	const handleFormChange = (e:ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setForm({
@@ -100,7 +109,7 @@ const Login = (props: LoginProps) => {
 					</span>
 				</div>
 				<div className={styles.LoginBtn} onClick={handleLogin}>登录</div>
-				<div className={styles.OtherLogin} onClick={handleOAuthLogin}>Github登录</div>
+				<div className={styles.OtherLogin} onClick={handleOAuthGithub}>Github登录</div>
 				<div className={styles.privacy} >
 					注册登录即表示同意
 					<a href='https://moco.imooc.com/privacy.html' target='_blank' rel='noreferrer'>隐私政策</a>
