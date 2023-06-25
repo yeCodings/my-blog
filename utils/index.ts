@@ -39,3 +39,34 @@ export const setCookie = (
   });
 
 };
+
+/**
+ * clearCookie 函数
+ * 
+ * @param cookies
+ * @param {userId,avatar,nickname}
+ * @returns cookies.set置空 (清除cookie数据)
+ */
+export const clearCookie = (  cookies: any) =>{
+  // 设置cookie过期时间
+  const expires = new Date(Date.now()+ 24*60*60*1000);
+
+  // 设置路径
+  const path = '/';
+  
+  // 保存cookie数据
+  cookies.set('userId','',{
+    path,
+    expires,
+  })
+
+  cookies.set('avatar','',{
+    path,
+    expires,
+  });
+
+  cookies.set('nickname','',{
+    path,
+    expires,
+  });
+}

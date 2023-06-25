@@ -7,8 +7,15 @@ interface IProps{
   children: ReactElement;
 }
 
-// ssr 配置为true； 判断是否启用静态渲染模式，以避免服务端渲染时出现问题
-enableStaticRendering(true);
+// ssr 配置为true；根据是否为浏览器环境 判断是否启用静态渲染模式，以避免服务端渲染时出现问题
+// enableStaticRendering(!(typeof window === 'undefined'));
+if (typeof window !== 'undefined') {
+  // 在浏览器环境下进行操作
+  enableStaticRendering(false);
+} else {
+  // 在其他环境下进行操作
+  enableStaticRendering(true);
+}
 
 // 创建一个 StoreContext 上下文，并初始化为一个空对象。
 const StoreContext = createContext({});

@@ -8,6 +8,8 @@ import { useState } from "react";
 import Login from "components/Login";
 import { useStore } from "store";
 import { HomeOutlined, LoginOutlined } from "@ant-design/icons";
+import request from 'service/fetch'
+import { observer } from "mobx-react-lite";
 
 const Navbar: NextPage = () => {
   const { pathname } = useRouter();
@@ -28,11 +30,22 @@ const Navbar: NextPage = () => {
     setIsShowLogin(false);
   };
 
+  const handleGotoPersonalPage = () => { };
+
+  // 登出，调接口，置空userInfo
+  const handleLogout = () => {
+    request.post('/api/user/logout').then((res:any)=> {
+      if(res?.code === 0){
+        store.user.setUserInfo({});
+      }
+    })
+  };
+
   const renderDropDownMenu = () => {
     return (
       <Menu>
-        <Menu.Item><HomeOutlined/>&nbsp; 个人主页</Menu.Item>
-        <Menu.Item><LoginOutlined />&nbsp; 退出系统</Menu.Item>
+        <Menu.Item onClick={handleGotoPersonalPage}><HomeOutlined/>&nbsp; 个人主页</Menu.Item>
+        <Menu.Item onClick={handleLogout}><LoginOutlined />&nbsp; 退出系统</Menu.Item>
       </Menu>
     )
   };
@@ -71,4 +84,5 @@ const Navbar: NextPage = () => {
   )
 }
 
-export default Navbar;
+// mobx 中使用observer 把组件包裹起来，变为响应式
+export default observer(Navbar);

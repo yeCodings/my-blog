@@ -28,7 +28,7 @@ export default function App({initialValue, Component, pageProps }: IProps) {
 }
 
 App.getInitialProps = async({ctx}:{ctx:any}) => {
-  const {userId,nickname,avatar} = ctx?.req.cookies || {};
+  const {userId,nickname,avatar} = ctx?.req?.cookies || {};
 
   return {
     initialValue:{

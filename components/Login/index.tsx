@@ -4,6 +4,7 @@ import CountDown from 'components/CountDown';
 import request from 'service/fetch';
 import { message } from 'antd';
 import { useStore } from 'store';
+import { observer } from 'mobx-react-lite';
 
 interface LoginProps {
 	isShow: boolean;
@@ -108,4 +109,4 @@ const Login = (props: LoginProps) => {
 		</div> : null
 };
 
-export default Login;
+export default observer(Login);
