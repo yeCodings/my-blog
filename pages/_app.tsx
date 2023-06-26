@@ -18,11 +18,21 @@ interface IProps{
 
 // 入口
 export default function App({initialValue, Component, pageProps }: IProps) {
+  // 是否需要页头组件包裹
+  const renderLayout = ()=> {
+    if((Component as any)?.layout === null){
+      return <Component {...pageProps} />
+    }else {
+      return (
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>)
+    }
+  };
+
   return (
   <StoreProvider initialValue={initialValue}>
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+   {renderLayout()}
   </StoreProvider>
   )
 }

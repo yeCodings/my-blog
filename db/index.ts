@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Connection, getConnection, createConnection } from 'typeorm';
-import {User,UserAuth} from './entity/index';
+import { User, UserAuth, Article } from './entity/index';
 
 const host = process.env.DATABASE_HOST;
 const port = Number(process.env.DATABASE_PORT);
@@ -10,16 +10,23 @@ const database = process.env.DATABASE_NAME;
 
 let connectReadyPromise: Promise<Connection> | null = null;
 
-export const prepareConnection = ()=> {
-  if(!connectReadyPromise){
-    connectReadyPromise = (async()=>{
+/**
+ * 创建一个数据库连接实例函数
+ * @returns  返回 Promise 对象，以便获取连接实例
+ */
+export const prepareConnection = () => {
+  // 如果还没有创建过数据库连接，则新建一个 Promise 对象来连接数据库
+  if (!connectReadyPromise) {
+    connectReadyPromise = (async () => {
       try {
+        // 先尝试获取已存在的连接实例，并关闭它
         const staleConnection = getConnection();
         await staleConnection.close();
       } catch (error) {
         console.log(error);
       }
 
+      // 创建一个新的数据库连接实例
       const connection = await createConnection({
         type: 'mysql',
         host,
@@ -27,15 +34,17 @@ export const prepareConnection = ()=> {
         username,
         password,
         database,
-        entities: [User,UserAuth], // 把这两张表注册进去
+        entities: [User, UserAuth, Article], // 把这两张表注册进去
         synchronize: false,
         logging: true
       });
 
+      // 返回连接实例
       return connection;
     })();
   }
 
+  // 返回 Promise 对象，以便在其他地方通过 then() 或 async/await 来获取连接实例
   return connectReadyPromise;
 };
 
