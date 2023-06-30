@@ -34,3 +34,59 @@
     width: 100%;
   }
 }
+
+.divider {
+  background-color: aliceblue;
+  height: 20px;
+}
+
+.comment {
+  .enter {
+    display: flex;
+    align-items: center;
+
+    .content{
+      width: 100%;
+      margin-left: 20px;
+
+      .btn {
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
+.display {
+  margin-top: 80px;
+
+  .wrapper {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 50px;
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      margin-left: 20px;
+      width: 100%;
+
+      .name {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 15px;
+        font-weight: bold;
+
+        .date {
+          color: #8a919f;
+          font-weight: normal;
+        }
+
+        .content {
+          color: #515767;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}
