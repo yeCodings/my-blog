@@ -2,9 +2,11 @@ import React from 'react'
 import Link from 'next/link';
 import {EyeOutlined }from '@ant-design/icons';
 import {formatDistanceToNow} from 'date-fns';
+import {markdownToTxt} from 'markdown-to-txt';
 import { IArticle } from 'pages/api';
 import Avatar from 'antd/lib/avatar/avatar';
 import styles from './index.module.scss';
+
 
 
 interface IProps{
@@ -23,7 +25,7 @@ const ListItem =(props: IProps)=> {
             <span className={styles.date}>{formatDistanceToNow(new Date(article?.update_time))}</span>
           </div>
           <h4 className={styles.title}>{article?.title}</h4>
-          <p className={styles.content}>{article?.content}</p>
+          <p className={styles.content}>{markdownToTxt(article?.content)}</p>
           <div className={styles.statistics}>
             <EyeOutlined />
             <span className={styles.item}>{article?.views}</span>
