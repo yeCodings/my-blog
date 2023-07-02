@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Connection, getConnection, createConnection } from 'typeorm';
-import { User, UserAuth, Article, Comment } from './entity/index';
+import { User, UserAuth, Article, Comment,Tag } from './entity/index';
 
 const host = process.env.DATABASE_HOST;
 const port = Number(process.env.DATABASE_PORT);
@@ -34,7 +34,7 @@ export const prepareConnection = () => {
         username,
         password,
         database,
-        entities: [User, UserAuth, Article,Comment], // 把这几张表注册进去
+        entities: [User, UserAuth, Article,Comment,Tag], // 把这几张表注册进去
         synchronize: false,
         logging: true
       });

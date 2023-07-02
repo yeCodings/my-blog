@@ -1,4 +1,9 @@
-export const EXCEPTION_USER = {};
+export const EXCEPTION_USER = {
+  NOT_LOGIN: {
+    code: 1001,
+    msg: '未登录'
+  }
+};
 
 export const EXCEPTION_ARTICLE = {
   PUBLISH_FAILED:{
@@ -15,8 +20,14 @@ export const EXCEPTION_ARTICLE = {
   }
 };
 
+export const EXCEPTION_TAG = {
+  FOLLOW_FAILED:{
+    code: 3001,
+    msg: '关注/取关操作失败'
+  },
+}
 
- 
+
 export const EXCEPTION_COMMENT = {
   PUBLISH_FAILED:{
     code: 4001,
