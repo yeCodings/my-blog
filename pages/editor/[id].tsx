@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
-import { ChangeEvent, useState } from "react";
-import { Input,Button, message } from "antd";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Input,Button, message, Select } from "antd";
 import {observer} from 'mobx-react-lite';
 import { useRouter } from "next/router";
 
@@ -60,6 +60,17 @@ const ModifyEditor = ({article}:IProps)=> {
   const articleId = Number(query.id);
   const [title,setTitle] = useState(article?.title || '');
   const [content, setContent] = useState(article?.content || '');
+
+  const [allTags,setAllTags] = useState([]);
+  const [tagIds,setTagIds] = useState([]);
+
+  useEffect(()=> {
+    request.get('/api/tag/get').then((res: any) => {
+      if(res?.code === 0){
+        setAllTags(res?.data?.allTags);
+      }
+    })
+  },[]);
   
   // 修改文章
   const handleUpdate = ()=> {
@@ -72,6 +83,7 @@ const ModifyEditor = ({article}:IProps)=> {
       id: article.id,
       title,
       content,
+      tagIds,
     }).then((res: any)=> {
       if(res?.code === 0){
         message.success('文章更新成功');
@@ -92,10 +104,26 @@ const ModifyEditor = ({article}:IProps)=> {
     setContent(content);
   };
 
+    // 选择标签
+    const handleSelectTag = (value: [])=> {
+      setTagIds(value);
+    };
+
   return (
     <div className={styles.container}>
       <div className={styles.operation}>
         <Input className={styles.title} placeholder='请输入文章标题' value={title} onChange={handleTitleChange} />
+        <Select 
+          className={styles.tag}
+          mode='multiple'        // 多选       
+          allowClear             // 清空
+          placeholder='请选择标签'
+          onChange={handleSelectTag}
+        >
+          {allTags?.map((tag:any) => (
+            <Select.Option key={tag?.id} value={tag?.id} >{tag?.title}</Select.Option>
+          ))}
+        </Select>
         <Button className={styles.button} type='primary' onClick={handleUpdate}>修改文章</Button>
       </div>
       <MDEditor value={content} height={700} onChange={handleContentChange} />

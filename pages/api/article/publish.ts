@@ -1,7 +1,7 @@
+import { withIronSessionApiRoute } from 'iron-session/next';
 import { ironOptions } from 'config';
 import { prepareConnection } from 'db';
-import { Article, User } from 'db/entity';
-import { withIronSessionApiRoute } from 'iron-session/next';
+import { Article, Tag, User } from 'db/entity';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ISession } from '../index';
 import { EXCEPTION_ARTICLE } from '../config/code';
@@ -13,18 +13,24 @@ async function publish(req: NextApiRequest, res: NextApiResponse) {
   const session: ISession = req.session;
 
   // 从req.body 获取当前的 title 和 content
-  const { title = '', content = '' } = req.body;
+  const { title = '', content = '', tagIds = [] } = req.body;
 
   // 和数据库建立连接
   const db = await prepareConnection();
 
   const userRepo = db.getRepository(User);
   const articleRepo = db.getRepository(Article);
+  const tagRepo = db.getRepository(Tag);
 
   // 查找发布文章的用户
   const user = await userRepo.findOne({
     id: session.userId,
   })
+
+  const tags = await tagRepo.find({
+    where: tagIds.map((tagId: number) =>  ({id: tagId}))
+  })
+
 
   // 创建新article数据
   const article = new Article();
@@ -38,6 +44,15 @@ async function publish(req: NextApiRequest, res: NextApiResponse) {
   // 绑定发布文章用户
   if (user) {
     article.user = user;
+  }
+
+  if(tags) {
+   const newTags = tags?.map(tag => {
+      tag.article_count = tag?.article_count + 1;
+      return tag;
+   });
+
+    article.tags = newTags;
   }
 
   // 保存发布的文章

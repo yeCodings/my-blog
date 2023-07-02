@@ -108,7 +108,7 @@ const ArticleDetail = (props: IProps) => {
       <MarkDown className={styles.markdown}>{article?.content}</MarkDown>
     </div>
     <div className={styles.divider}></div>
-    <div className="content-layouts">
+    <div className="content-layout">
       <div className={styles.comment}>
         <h3>评论</h3>
         {

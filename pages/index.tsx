@@ -4,9 +4,6 @@ import { Article } from 'db/entity';
 import ListItem from 'components/ListItem';
 import { IArticle } from 'pages/api';
 
-// interface IArticle{
-//   [x: string]: ReactNode;
-// }
 interface IProps {
   articles: IArticle[];
 }
